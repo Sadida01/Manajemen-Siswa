@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Manajemen Siswa & Terminal Simulator</title>
+    <!-- Xterm.js CSS untuk Tampilan Terminal -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Aplikasi Manajemen Siswa</h1>
+            <p>Unduh file script dan jalankan simulasi CLI langsung di bawah ini.</p>
+        </header>
+
+        <!-- Bagian Download File -->
+        <div class="download-card">
+            <div class="file-info">
+                <h3>📄 Script Manajemen Siswa</h3>
+                <p>Format: Python Script (.py) | Fungsi: CRUD Data Siswa via Terminal</p>
+            </div>
+            <!-- Ubah href sesuai file yang ingin didownload -->
+            <a href="manajemen_siswa.py" download class="btn-download">
+                📥 Download File Script
+            </a>
+        </div>
+
+        <!-- Bagian Terminal Simulator -->
+        <div class="terminal-card">
+            <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">Terminal Simulator - CLI</span>
+            </div>
+            <div id="terminal"></div>
+        </div>
+    </div>
+
+    <!-- Xterm.js Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

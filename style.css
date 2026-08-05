@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0b0f19;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.12) 0px, transparent 50%);
+    color: #f1f5f9;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 920px;
+}
+
+/* Header Section */
+header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #94a3b8;
+    font-size: 0.98rem;
+}
+
+/* Download Card */
+.download-card {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.download-card:hover {
+    border-color: rgba(56, 189, 248, 0.3);
+    transform: translateY(-2px);
+}
+
+.file-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.file-info p {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-family: 'Fira Code', monospace;
+}
+
+.btn-download {
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-download:hover {
+    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.55);
+    transform: translateY(-1px);
+}
+
+/* Terminal Card */
+.terminal-card {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+}
+
+.terminal-header {
+    background: #161b22;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #21262d;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.terminal-title {
+    margin-left: 8px;
+    font-size: 0.82rem;
+    color: #8b949e;
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+}
+
+#terminal {
+    padding: 16px;
+    height: 420px;
+    width: 100%;
+}
+
+/* Scrollbar Style Terminal */
+.xterm-viewport::-webkit-scrollbar {
+    width: 8px;
+}
+.xterm-viewport::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+.xterm-viewport::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+}
