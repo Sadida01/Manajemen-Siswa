@@ -1,332 +1,99 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manajemen Siswa — Aplikasi CRUD Python</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #FFFFFF;
-    --bg-soft: #F7F8FA;
-    --ink: #0F172A;
-    --ink-soft: #475569;
-    --ink-faint: #94A3B8;
-    --accent: #2563EB;
-    --accent-deep: #1D4ED8;
-    --line: #E2E8F0;
-    --term-bg: #0B1220;
-    --term-line: #1E293B;
-    --term-text: #E2E8F0;
-    --term-dim: #64748B;
-    --maxw: 1080px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download File</title>
 
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
 
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
+        body{
+            background:#f4f4f4;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+        }
 
-  a{ color:inherit; }
-  :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+        .container{
+            width:400px;
+            background:#fff;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 5px 15px rgba(0,0,0,.2);
+            text-align:center;
+        }
 
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 32px; }
+        h1{
+            color:#333;
+            margin-bottom:10px;
+        }
 
-  /* ---------- Header ---------- */
-  header{ padding:22px 0; border-bottom:1px solid var(--line); }
-  header .wrap{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-weight:700; font-size:17px; letter-spacing:-0.01em;
-  }
-  .brand .mark{
-    width:26px; height:26px; border-radius:7px;
-    background:var(--accent);
-    display:flex; align-items:center; justify-content:center;
-    color:#fff; font-size:13px; font-weight:800;
-    flex-shrink:0;
-  }
-  header nav a{
-    text-decoration:none; color:var(--ink-soft);
-    font-size:14.5px; font-weight:500; margin-left:26px;
-  }
-  header nav a:hover{ color:var(--ink); }
+        p{
+            color:#666;
+            margin-bottom:25px;
+        }
 
-  /* ---------- Hero ---------- */
-  .hero{ padding:72px 0 84px; }
-  .hero .wrap{
-    display:grid; grid-template-columns:1.05fr 0.95fr;
-    gap:56px; align-items:center;
-  }
-  .hero h1{
-    font-weight:800; font-size:clamp(32px, 3.8vw, 46px);
-    line-height:1.14; letter-spacing:-0.02em; max-width:13ch;
-  }
-  .hero .lede{
-    margin-top:18px; max-width:44ch; font-size:16.5px; color:var(--ink-soft);
-  }
-  .cta-row{ display:flex; align-items:center; gap:16px; margin-top:30px; flex-wrap:wrap; }
-  .btn{
-    display:inline-flex; align-items:center; gap:9px;
-    padding:13px 22px; border-radius:8px;
-    font-size:15px; font-weight:600; text-decoration:none;
-    transition:background .15s ease, transform .15s ease;
-  }
-  .btn-primary{ background:var(--accent); color:#fff; }
-  .btn-primary:hover{ background:var(--accent-deep); transform:translateY(-1px); }
-  .btn-primary svg{ flex-shrink:0; }
-  .file-meta{ font-size:13px; color:var(--ink-faint); font-family:'JetBrains Mono', monospace; }
+        .download-btn{
+            display:block;
+            width:100%;
+            text-decoration:none;
+            color:white;
+            background:#007bff;
+            padding:14px;
+            margin:10px 0;
+            border-radius:8px;
+            font-size:17px;
+            transition:.3s;
+        }
 
-  /* ---------- Terminal mockup ---------- */
-  .terminal{
-    background:var(--term-bg);
-    border-radius:10px;
-    overflow:hidden;
-    box-shadow:0 18px 44px -16px rgba(15,23,42,.35);
-    border:1px solid #0000;
-  }
-  .term-bar{
-    display:flex; align-items:center; gap:8px;
-    padding:12px 14px;
-    border-bottom:1px solid var(--term-line);
-  }
-  .term-dots{ display:flex; align-items:center; gap:7px; flex-shrink:0; }
-  .term-dots span{ width:11px; height:11px; border-radius:50%; display:block; }
-  .term-dots .red{ background:#FF5F56; }
-  .term-dots .yellow{ background:#FFBD2E; }
-  .term-dots .green{ background:#27C93F; }
-  .term-bar .fname{
-    margin-left:6px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:12px;
-    color:var(--term-dim);
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .term-body{
-    padding:20px 20px 24px;
-    font-family:'JetBrains Mono', monospace;
-    font-size:13px;
-    color:var(--term-text);
-    white-space:pre;
-    overflow-x:auto;
-  }
-  .term-body .rule{ color:var(--term-dim); }
-  .term-body .title{ color:#fff; font-weight:500; }
-  .term-body .num{ color:#60A5FA; }
-  .term-prompt{ display:flex; align-items:center; gap:2px; margin-top:4px; }
-  .cursor{
-    display:inline-block; width:7px; height:14px;
-    background:var(--accent); margin-left:4px;
-    animation:blink 1.1s step-end infinite;
-  }
-  @keyframes blink{ 50%{ opacity:0; } }
-  @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
+        .download-btn:hover{
+            background:#0056b3;
+            transform:scale(1.02);
+        }
 
-  /* ---------- Sections ---------- */
-  section{ padding:60px 0; }
-  .section-head{
-    display:flex; align-items:baseline; justify-content:space-between;
-    gap:24px; margin-bottom:34px;
-    border-bottom:1px solid var(--line); padding-bottom:16px;
-  }
-  .section-head h2{ font-weight:700; font-size:24px; letter-spacing:-0.01em; }
-  .section-head p{ color:var(--ink-faint); font-size:14.5px; max-width:32ch; text-align:right; }
+        .pdf{
+            background:#dc3545;
+        }
 
-  /* Fitur */
-  .feature-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:0; border-top:1px solid var(--line); }
-  .feature{ padding:20px 4px; border-bottom:1px solid var(--line); }
-  .feature:nth-child(odd){ border-right:1px solid var(--line); padding-right:32px; }
-  .feature:nth-child(even){ padding-left:32px; }
-  .feature h3{ font-size:15px; font-weight:600; margin-bottom:6px; }
-  .feature p{ font-size:14px; color:var(--ink-soft); max-width:38ch; }
+        .pdf:hover{
+            background:#b02a37;
+        }
 
-  /* Cara menjalankan */
-  .steps{ counter-reset:step; }
-  .step{
-    display:grid; grid-template-columns:44px 1fr; gap:18px;
-    padding:20px 0; border-top:1px solid var(--line);
-  }
-  .step:last-child{ border-bottom:1px solid var(--line); }
-  .step-num{
-    counter-increment:step;
-    font-weight:700; font-size:19px; color:var(--accent);
-  }
-  .step-num::before{ content: counter(step, decimal-leading-zero); }
-  .step h3{ font-size:15px; font-weight:600; margin-bottom:6px; }
-  .step p{ color:var(--ink-soft); font-size:14px; max-width:56ch; }
-  .step code{
-    display:inline-block; margin-top:10px;
-    background:var(--bg-soft); border:1px solid var(--line); border-radius:6px;
-    padding:8px 12px; font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--ink);
-  }
+        .doc{
+            background:#198754;
+        }
 
-  /* Footer */
-  footer{ border-top:1px solid var(--line); padding:26px 0 38px; }
-  footer .wrap{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-  footer p{ font-size:13.5px; color:var(--ink-faint); }
-  .badge{
-    display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:500;
-    color:var(--ink-soft); border:1px solid var(--line); border-radius:100px; padding:6px 13px;
-  }
-  .badge .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); }
+        .doc:hover{
+            background:#146c43;
+        }
 
-  /* ---------- Responsive ---------- */
-  @media (max-width: 860px){
-    .hero .wrap{ grid-template-columns:1fr; gap:36px; }
-    .feature-grid{ grid-template-columns:1fr; }
-    .feature:nth-child(odd){ border-right:none; padding-right:4px; }
-    .feature:nth-child(even){ padding-left:4px; }
-    .section-head{ flex-direction:column; align-items:flex-start; gap:8px; }
-    .section-head p{ text-align:left; }
-  }
-  @media (max-width: 520px){
-    .wrap{ padding:0 20px; }
-    .hero{ padding:48px 0 56px; }
-    header nav a{ margin-left:14px; }
-    .step{ grid-template-columns:34px 1fr; }
-  }
-</style>
+        .img{
+            background:#fd7e14;
+        }
+
+        .img:hover{
+            background:#ca6510;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <div class="brand"><span class="mark">M</span>Manajemen Siswa</div>
-    <nav>
-      <a href="#fitur">Fitur</a>
-      <a href="#cara">Cara pakai</a>
-    </nav>
-  </div>
-</header>
+<div class="container">
+    <h1>Download File</h1>
+    <p>Silakan pilih file yang ingin diunduh.</p>
 
-<section class="hero">
-  <div class="wrap">
-    <div>
-      <h1>Kelola data siswa langsung dari terminal.</h1>
-      <p class="lede">Aplikasi CLI berbasis Python untuk mencatat, mencari, dan merekap data siswa. Tanpa server, tanpa instalasi rumit — data tersimpan otomatis ke JSON di komputer kamu sendiri.</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="manajemen_siswa.py" download>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5V10.5M8 10.5L4.5 7M8 10.5L11.5 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12.5V13.5C2 14.0523 2.44772 14.5 3 14.5H13C13.5523 14.5 14 14.0523 14 13.5V12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Unduh manajemen_siswa.py
-        </a>
-        <span class="file-meta">Python 3 · tanpa dependensi eksternal</span>
-      </div>
-    </div>
+    <a href="files/manajemen siswa.py" download class="download-btn pdf">
+        📄 Download Manajemen Siswa (Python)
+    </a>
 
-    <div class="terminal">
-      <div class="term-bar">
-        <span class="term-dots"><span class="red"></span><span class="yellow"></span><span class="green"></span></span>
-        <span class="fname">manajemen_siswa.py — bash</span>
-      </div>
-      <div class="term-body">$ python manajemen_siswa.py
-
-<span class="rule">=============================================</span>
-<span class="title">     APLIKASI MANAJEMEN SISWA (CRUD)</span>
-<span class="rule">=============================================</span>
-<span class="num">1.</span> Tambah Data Siswa
-<span class="num">2.</span> Lihat Semua Data Siswa
-<span class="num">3.</span> Cari Data Siswa
-<span class="num">4.</span> Edit Data Siswa
-<span class="num">5.</span> Hapus Data Siswa
-<span class="num">6.</span> Hitung Siswa per Kelas/Jurusan
-<span class="num">0.</span> Keluar
-<span class="rule">=============================================</span>
-<span class="term-prompt">Pilih menu (0-6): <span class="cursor"></span></span></div>
-    </div>
-  </div>
-</section>
-
-<section id="fitur">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Yang bisa dilakukan</h2>
-      <p>Enam menu inti, cukup lewat keyboard.</p>
-    </div>
-    <div class="feature-grid">
-      <div class="feature">
-        <h3>Tambah data siswa</h3>
-        <p>Input NIS, nama, kelas/jurusan, jenis kelamin, dan alamat. NIS ganda otomatis ditolak.</p>
-      </div>
-      <div class="feature">
-        <h3>Lihat semua siswa</h3>
-        <p>Menampilkan seluruh data dalam tabel rapi langsung di terminal.</p>
-      </div>
-      <div class="feature">
-        <h3>Cari siswa</h3>
-        <p>Pencarian cepat berdasarkan NIS atau potongan nama, tidak case-sensitive.</p>
-      </div>
-      <div class="feature">
-        <h3>Edit data</h3>
-        <p>Ubah sebagian field saja — kolom yang dikosongkan tetap memakai nilai lama.</p>
-      </div>
-      <div class="feature">
-        <h3>Hapus data</h3>
-        <p>Ada konfirmasi sebelum data benar-benar dihapus, jadi tidak terhapus tak sengaja.</p>
-      </div>
-      <div class="feature">
-        <h3>Rekap per kelas</h3>
-        <p>Hitung jumlah siswa per kelas/jurusan, lalu ekspor rekapnya ke CSV atau TXT.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="cara">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Cara menjalankan</h2>
-      <p>Butuh Python 3, tidak ada library tambahan.</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num"></div>
-        <div>
-          <h3>Unduh filenya</h3>
-          <p>Klik tombol unduh di atas, atau clone repository ini ke komputer kamu.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div>
-          <h3>Buka terminal di folder tersebut</h3>
-          <p>Pastikan Python 3 sudah terpasang di komputer kamu.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div>
-          <h3>Jalankan programnya</h3>
-          <p>Ketik perintah berikut, lalu ikuti menu yang muncul.</p>
-          <code>python manajemen_siswa.py</code>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num"></div>
-        <div>
-          <h3>Data tersimpan otomatis</h3>
-          <p>Setiap perubahan langsung ditulis ke <code>data_siswa.json</code> di folder yang sama, jadi data tidak hilang saat program ditutup.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p>Aplikasi CLI manajemen siswa — dibuat dengan Python standard library.</p>
-    <span class="badge"><span class="dot"></span>Python 3</span>
-  </div>
-</footer>
+</div>
 
 </body>
 </html>
