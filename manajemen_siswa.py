@@ -1,5 +1,20 @@
+"""
+=====================================================
+ APLIKASI MANAJEMEN SISWA (CRUD) - BERBASIS PYTHON
+=====================================================
+Aplikasi CLI (Command Line Interface) untuk mengelola
+data siswa: Create, Read, Update, Delete.
+Data disimpan otomatis ke file 'data_siswa.json' agar
+tidak hilang saat program ditutup.
+
+Cara menjalankan:
+    python manajemen_siswa.py
+=====================================================
+"""
+
 import json
 import os
+import csv
 
 FILE_DATA = "data_siswa.json"
 
@@ -25,7 +40,37 @@ def simpan_data(data):
 
 
 # ---------------------------------------------------
-# FUNGSI CRUD
+# FUNGSI EKSPOR REKAPITULASI
+# ---------------------------------------------------
+def ekspor_rekap_csv(rekap, total_siswa):
+    filename = "rekap_siswa_per_kelas.csv"
+    with open(filename, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Kelas/Jurusan", "Jumlah Siswa"])
+        for kelas, jumlah in rekap.items():
+            writer.writerow([kelas, jumlah])
+        writer.writerow([])
+        writer.writerow(["Total Keseluruhan", total_siswa])
+    print(f"✅ Rekapitulasi berhasil diekspor ke file '{filename}'")
+
+
+def ekspor_rekap_txt(rekap, total_siswa):
+    filename = "rekap_siswa_per_kelas.txt"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write("=========================================\n")
+        f.write(" REKAPITULASI JUMLAH SISWA PER KELAS\n")
+        f.write("=========================================\n\n")
+        f.write(f"{'Kelas/Jurusan':<25}{'Jumlah Siswa':<15}\n")
+        f.write("-" * 40 + "\n")
+        for kelas, jumlah in rekap.items():
+            f.write(f"{kelas:<25}{jumlah:<15}\n")
+        f.write("-" * 40 + "\n")
+        f.write(f"Total Keseluruhan : {total_siswa} siswa\n")
+    print(f"✅ Rekapitulasi berhasil diekspor ke file '{filename}'")
+
+
+# ---------------------------------------------------
+# FUNGSI CRUD & FITUR TAMBAHAN
 # ---------------------------------------------------
 def tambah_siswa(data):
     print("\n--- TAMBAH DATA SISWA ---")
@@ -36,7 +81,7 @@ def tambah_siswa(data):
         return
 
     nama = input("Nama Lengkap   : ").strip()
-    kelas = input("Kelas          : ").strip()
+    kelas = input("Kelas/Jurusan  : ").strip()
     jk = input("Jenis Kelamin (L/P): ").strip().upper()
     alamat = input("Alamat         : ").strip()
 
@@ -58,10 +103,10 @@ def lihat_semua_siswa(data):
         print("(Belum ada data siswa)")
         return
 
-    print(f"{'NIS':<10}{'Nama':<20}{'Kelas':<10}{'JK':<5}{'Alamat':<25}")
-    print("-" * 70)
+    print(f"{'NIS':<10}{'Nama':<20}{'Kelas':<15}{'JK':<5}{'Alamat':<25}")
+    print("-" * 75)
     for s in data:
-        print(f"{s['nis']:<10}{s['nama']:<20}{s['kelas']:<10}"
+        print(f"{s['nis']:<10}{s['nama']:<20}{s['kelas']:<15}"
               f"{s['jenis_kelamin']:<5}{s['alamat']:<25}")
 
 
@@ -131,6 +176,58 @@ def hapus_siswa(data):
     print(f"❌ Siswa dengan NIS '{nis}' tidak ditemukan.")
 
 
+def hitung_siswa_per_kelas(data):
+    print("\n--- HITUNG JUMLAH SISWA BERDASARKAN KELAS/JURUSAN ---")
+    if not data:
+        print("(Belum ada data siswa)")
+        return
+
+    print("1. Cari spesifik berdasarkan nama Kelas/Jurusan")
+    print("2. Tampilkan rekapitulasi semua Kelas/Jurusan")
+    pilihan = input("Pilih mode (1/2): ").strip()
+
+    if pilihan == "1":
+        target = input("Masukkan nama Kelas/Jurusan: ").strip().lower()
+        hasil = [s for s in data if target == s["kelas"].lower()]
+        
+        print(f"\n📊 Total siswa di kelas/jurusan '{target.upper()}': {len(hasil)} orang")
+        if hasil:
+            print("-" * 50)
+            for i, s in enumerate(hasil, 1):
+                print(f"{i}. {s['nis']} - {s['nama']} ({s['jenis_kelamin']})")
+
+    elif pilihan == "2":
+        rekap = {}
+        for s in data:
+            k = s["kelas"]
+            rekap[k] = rekap.get(k, 0) + 1
+
+        print("\n📊 Rekapitulasi Jumlah Siswa Per Kelas/Jurusan:")
+        print(f"{'Kelas/Jurusan':<20}{'Jumlah Siswa':<15}")
+        print("-" * 35)
+        for kelas, jumlah in rekap.items():
+            print(f"{kelas:<20}{jumlah:<15}")
+        print("-" * 35)
+        print(f"Total Keseluruhan : {len(data)} siswa\n")
+
+        # Opsi Ekspor
+        ekspor = input("Apakah ingin mengekspor rekapitulasi ini? (y/n): ").strip().lower()
+        if ekspor == "y":
+            print("Pilih Format Ekspor:")
+            print("1. File CSV (.csv)")
+            print("2. File Text (.txt)")
+            fmt = input("Pilih format (1/2): ").strip()
+            if fmt == "1":
+                ekspor_rekap_csv(rekap, len(data))
+            elif fmt == "2":
+                ekspor_rekap_txt(rekap, len(data))
+            else:
+                print("❌ Format tidak valid. Ekspor dibatalkan.")
+
+    else:
+        print("❌ Pilihan tidak valid.")
+
+
 # ---------------------------------------------------
 # MENU UTAMA
 # ---------------------------------------------------
@@ -143,6 +240,7 @@ def tampilkan_menu():
     print("3. Cari Data Siswa")
     print("4. Edit Data Siswa")
     print("5. Hapus Data Siswa")
+    print("6. Hitung Siswa per Kelas/Jurusan")
     print("0. Keluar")
     print("=" * 45)
 
@@ -152,7 +250,7 @@ def main():
 
     while True:
         tampilkan_menu()
-        pilihan = input("Pilih menu (0-5): ").strip()
+        pilihan = input("Pilih menu (0-6): ").strip()
 
         if pilihan == "1":
             tambah_siswa(data)
@@ -164,6 +262,8 @@ def main():
             edit_siswa(data)
         elif pilihan == "5":
             hapus_siswa(data)
+        elif pilihan == "6":
+            hitung_siswa_per_kelas(data)
         elif pilihan == "0":
             print("Terima kasih, sampai jumpa! 👋")
             break
